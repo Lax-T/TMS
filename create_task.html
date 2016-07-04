@@ -1,0 +1,221 @@
+{% extends "layout.html" %}
+{% block main %}
+<h2 style='text-align:center; margin: 0 0 20px 0'> Створити нове завдання </h2>
+<form action="create_task" method="post">
+
+{% if not number_sr %} <!--If number not yet checked-->
+<table border="0" class='create_object'>
+	<tr>
+		<td style="width: 120px">Номер об'єкту:</td>
+		<td><input type="text" name="number" maxlength="8" autocomplete="off" required style="width: 70px">&nbsp;<button type="submit" name="submit" value="button1">Пошук</button></td>			
+	</tr>	
+    <tr>
+        <td>Точний пошук:</td>
+        <td style="text-align: left; vertical-align: middle;"><input type="checkbox" name="strict" style="vertical-align: middle;"></td>
+    </tr>
+</table>
+
+{% elif number_sr %}
+{% if not number_fnd %} <!--If number not found-->
+<table border="0" class='create_object'>
+	<tr>
+		<td style="width: 120px">Номер об'єкту:</td>
+		<td><input type="text" name="number" maxlength="8" autocomplete="off" required style="width: 70px"> &nbsp; <button type="submit" name="submit" value="button1">Пошук</button></td>	        		
+	</tr>
+    <tr>
+        <td>Точний пошук:</td>
+        <td style="text-align: left; vertical-align: middle;"><input type="checkbox" name="strict" style="vertical-align: middle;"></td>
+    </tr>
+    <tr>
+        <td colspan=2 style="text-align: left; color: red; font-size: 15px">Об'єкт не знайдено!</td>
+    </tr>
+    <tr>
+        <td colspan=2 style="text-align: left">Ви можете повторити пошук об'єкту або <a class='sidebar_url' href={{url_for('create_object')}}><strong>створити новий</strong></a></td>
+    </tr>
+</table>
+
+{% elif number_fnd %} <!--If number found-->
+{% if not input_err %}
+<table border="0" class='create_object'>
+	<tr>
+		<td style="width: 120px">Номер об'єкту:</td>
+		<td colspan=3><input type="text" name="number" maxlength="8" autocomplete="off" required style="width: 70px">&nbsp;<button type="submit" name="submit" value="button1">Пошук</button></td>			
+	</tr>
+    <tr>
+        <td>Точний пошук:</td>
+        <td style="text-align: left; vertical-align: middle;"><input type="checkbox" name="strict" style="vertical-align: middle;"></td>
+    </tr>
+</table>
+</form>
+<hr class="separator1">
+<form action="create_task" method="post">
+<p><table class='ct_object_select'>	
+{% for index in data_index %}	    
+	<tr>
+        <td rowspan=2 style='width: 30px; text-align:center'><input type="radio" name="objectid" required value={{data[index]['id']}}></td>
+	 	<td rowspan=2 class='border_tbl' style='width: 80px; white-space:nowrap; text-align:center'><a href="{{url_for('object_details', object_id=data[index]['id'])}}" class='ob_details_url'><strong>{{data[index]['number']}}</strong></a></td>
+		<td class='border_tr'>{{data[index]['name']}}</td>					
+	</tr>
+	<tr>
+		<td class="border_rb">{{data[index]['address']}}</td>
+	</tr>
+{% endfor %}	
+</table>
+<hr class="separator1">
+<table border="0" class="create_object">
+    <tr>
+        <td style="width: 120px">Тип завдання:</td>
+        <td colspan=4><select name="eventtype"><option value='1' selected>Тривога</option>
+					                <option value='2'>Несправність</option>
+					                <option value='3'>Заява ВО</option>
+                                    <option value='4'>Внутрішнє завдання</option>
+                                    <option value='5'>Інше</option>
+		</select></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Завдання:</td>
+        <td colspan=4><textarea name="event" maxlength="2000" autocomplete="off" required style="width: 500px; height: 70px"></textarea></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Дата події:</td>
+        <td style="width: 120px"><input type="text" name="eventdate" maxlength="10" autocomplete="off" placeholder="дд.мм.рррр" required style="width: 90px"></td>
+        <td style="width: 30px">час:</td>
+        <td><input type="text" name="eventtime" maxlength="5" autocomplete="off" placeholder="гг.хх" required style="width: 50px"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Пріоритет:</td>
+        <td colspan=4><select name="priority"><option value='4'>Критичний</option>
+                                              <option value='3'>Високий</option>
+					                          <option value='2' selected>Звичайний</option>
+                                              <option value='1'>Низький</option>
+		</select></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Виконавець:</td>
+        <td colspan=4><select name="assignedto"><option value='1'>admin</option>
+					                            <option value='1' selected>admin</option>
+					                            <option value='1'>admin</option>
+                                                <option value='1'>admin</option>
+		</select></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Відтермінувати:</td>
+        <td><input type="checkbox" name="suspend"></td> 
+        <td>до:</td>   
+        <td><input type="text" name="penddate" maxlength="10" autocomplete="off" placeholder="дд.мм.рррр" style="width: 90px"></td>
+    </tr>    
+    <tr style="padding: 20px 0 0 0;">
+        <td></td>
+        <td style="padding: 20px 0 0 0;"><button type="submit" name="submit" value="button2">Зберегти</button></td>
+        <td></td>
+        <td></td>        
+    </tr> 
+</table>
+
+{% elif input_err %}<!--If number found but user input invalid data-->
+<table border="0" class='create_object'>
+	<tr>
+		<td style="width: 120px">Номер об'єкту:</td>
+		<td colspan=3><input type="text" name="number" maxlength="8" autocomplete="off" required style="width: 70px">&nbsp;<button type="submit" name="submit" value="button1">Пошук</button></td>			
+	</tr>
+    <tr>
+        <td>Точний пошук:</td>
+        <td style="text-align: left; vertical-align: middle;"><input type="checkbox" name="strict" style="vertical-align: middle;"></td>
+    </tr>
+</table>
+</form>
+<hr class="separator1">
+<form action="create_task" method="post">
+<p><table class='ct_object_select'>		    
+	<tr>
+        <td rowspan=2 style='width: 30px; text-align:center'><input type="radio" name="objectid" required checked value={{data['id']}}></td>
+	 	<td rowspan=2 class='border_tbl' style='width: 80px; white-space:nowrap; text-align:center'><a href="{{url_for('object_details', object_id=data['id'])}}" class='ob_details_url'><strong>{{data['number']}}</strong></a></td>
+		<td class='border_tr'>{{data['name']}}</td>					
+	</tr>
+	<tr>
+		<td class="border_rb">{{data['address']}}</td>
+	</tr>
+</table>
+<hr class="separator1">
+<table border="0" class="create_object">
+    <tr>
+        <td style="width: 120px">Тип завдання:</td>
+        <td colspan=4><select name="eventtype"><option value='1' {% if task_data['eventtype'] == "1" %} selected {% endif %} >Тривога</option>
+					                <option value='2' {% if task_data['eventtype'] == "2" %} selected {% endif %} >Несправність</option>
+					                <option value='3' {% if task_data['eventtype'] == "3" %} selected {% endif %} >Заява ВО</option>
+                                    <option value='4' {% if task_data['eventtype'] == "4" %} selected {% endif %} >Внутрішнє завдання</option>
+                                    <option value='5' {% if task_data['eventtype'] == "5" %} selected {% endif %} >Інше</option>
+		</select></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Завдання:</td>
+        <td colspan=4><textarea name="event" maxlength="2000" autocomplete="off" value="123" required style="width: 500px; height: 70px">{{task_data['event']}}</textarea></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Дата події:</td>
+        <td style="width: 120px"><input type="text" name="eventdate" maxlength="10" autocomplete="off" placeholder="дд.мм.рррр" value="{{task_data['eventdateraw']}}" required style="width: 90px"></td>
+        <td style="width: 30px">час:</td>
+        <td><input type="text" name="eventtime" maxlength="5" autocomplete="off" placeholder="гг.хх" value="{{task_data['eventtimeraw']}}" required style="width: 50px"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Пріоритет:</td>
+        <td colspan=4><select name="priority"><option value='4' {% if task_data['priority'] == "4" %} selected {% endif %} >Критичний</option>
+                                              <option value='3' {% if task_data['priority'] == "3" %} selected {% endif %} >Високий</option>
+					                          <option value='2' {% if task_data['priority'] == "2" %} selected {% endif %} >Звичайний</option>
+                                              <option value='1' {% if task_data['priority'] == "1" %} selected {% endif %} >Низький</option>
+		</select></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Виконавець:</td>
+        <td colspan=4><select name="assignedto"><option value='1'>admin</option>
+					                            <option value='1' selected>admin</option>
+					                            <option value='1'>admin</option>
+                                                <option value='1'>admin</option>
+		</select></td>
+    </tr>
+    <tr>
+        <td style="width: 120px">Відтермінувати:</td>
+        <td><input type="checkbox" name="suspend" {% if task_data['suspend'] %} checked {% endif %}></td> 
+        <td>до:</td>   
+        <td><input type="text" name="penddate" maxlength="10" autocomplete="off" value="{{task_data['penddateraw']}}" placeholder="дд.мм.рррр" style="width: 90px"></td>
+    </tr>    
+    <tr>
+		<td></td>
+		<td colspan=3 style="color:red; padding: 5px 0 10px 0""><strong>{{err_message}}</strong></td>	
+	</tr>
+    <tr style="padding: 20px 0 0 0;">
+        <td></td>
+        <td style="padding: 20px 0 0 0;"><button type="submit" name="submit" value="button2">Зберегти</button></td>
+        <td></td>
+        <td></td>        
+    </tr> 
+</table>
+{% endif %}
+{% endif %}
+{% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

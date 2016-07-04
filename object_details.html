@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block sidebar%}
+<a class='sidebar_url' href="{{url_for('create_object')}}"><strong>Створити об'єкт</strong></a>
+{% endblock %}
+{% block main %}
+<h2 style='text-align:center; margin: 0 0 10px 0'> Детальна інформація по обєкту №{{object_data['number']}}</h2>
+<table class='object_list'>		
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999; border-bottom:1px solid #999999'>	 		
+			<td colspan=2>{{object_data['name']}}</td>
+	        <td style='width: 60px; white-space:nowrap'>{{object_data['contract']}}</td>
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+			<td colspan=3>{{object_data['address']}}</td>
+		</tr>
+        <tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+            <td style='width: 110px; border-right:1px solid #999999'>Обладнання:</td>
+			<td colspan=2>{{object_data['device']}}</td>
+		</tr>
+        <tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+            <td style='width: 110px; border-right:1px solid #999999'>Комунікатори:</td>
+			<td colspan=2>{{object_data['comm']}}</td>
+		</tr>
+        <tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+            <td style='width: 110px; border-right:1px solid #999999'>SIM карти:</td>
+			<td colspan=2>{{object_data['sim']}}</td>
+		</tr>
+</table>
+{% endblock %}

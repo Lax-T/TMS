@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block main %}
+<h2 style='text-align:center; margin: 0 0 20px 0'> Створити об'єкт </h2>
+
+<form action="create_object" method="post">
+{% if not number_chk %} <!--Enter and check number-->
+<table border="0" class='create_object'>
+	<tr>
+		<td style="width: 165px">Номер обєкту:</td>
+		<td colspan=3><input type="text" name="number" maxlength="8" autocomplete="off" required style="width: 70px">&nbsp<button type="submit" name="submit" value="button1">Перевірити номер</button></td>			
+	</tr>	
+</table>
+
+{% elif number_chk %}
+{% if not number_free %} <!--I number is used-->
+<table border="0" class='create_object'>
+	<tr>
+		<td style="width: 165px">Номер обєкту:</td>
+		<td colspan=3><input type="text" name="number" maxlength="8" value={{number}} autocomplete="off" required style="width: 70px">&nbsp<button type="submit" name="submit" value="button1">Перевірити номер</button></td>			
+	</tr>
+	<tr>
+		<td></td>
+		<td colspan=3 style="color:red; padding: 5px 0 10px 0""><strong>Номер зайнятий!</strong></td>	
+	</tr>
+</table>
+
+{% else %} <!--I number is free-->
+<table border="0" class='create_object'>
+	<tr>
+		<td>Номер обєкту:</td>
+		<td colspan=3><input type="text" name="number" value={{number}} disabled style="width: 70px"> &nbsp <button type="submit" name="submit" value="button1" disabled >Перевірити номер</button></td>			
+	</tr>
+	<tr>
+		<td></td>
+		<td colspan=3 style="color:green; padding: 5px 0 10px 0""><strong>Номер вільний!</strong></td>	
+	</tr>
+	<tr>
+		<td>Назва обєкту:</td>
+		<td colspan=3><input type="text" name="name" maxlength="100" required style="width: 440px">*</td>
+	</tr>
+	<tr>
+		<td>Район:</td>
+		<td colspan=3><select name="region"><option value='м.Тернопіль' selected>м.Тернопіль</option>
+					<option value='Теребовлянський р-н.'>Теребовлянський р-н.</option>
+					<option value='Чортківський р-н.'>Чортківський р-н.</option>
+				</select></td>		
+	</tr>
+	<tr>
+		<td style="width: 165px; white-space:nowrap">Місто/населений пункт:</td>
+		<td colspan=3><input type="text" name="city" maxlength="20" required>*</td>
+	</tr>
+	<tr>
+		<td>Вулиця:</td>
+		<td colspan=3><input type="text" name="street" maxlength="25" required>*</td>
+	</tr>
+	<tr>
+		<td>Дім:</td>
+		<td><input style="width: 40px" type="text" name="house" maxlength="4" required>*</td>
+		<td>/ квартира:</td>
+		<td><input style="width: 40px" type="text" name="flat" maxlength="6"></td>
+	</tr>
+	<tr>
+		<td>Договір:</td>
+		<td colspan=3><input style="width: 120px" type="text" name="contract" maxlength="10"></td>
+	</tr>
+	<tr>
+		<td>Прилад 1:</td>
+		<td><input style="width: 120px" type="text" name="device1" maxlength="20" required>*</td>
+		<td>Прилад 2:</td>
+		<td><input style="width: 120px" type="text" name="device2" maxlength="20"></td>
+	</tr>
+	<tr>
+		<td>Комунікатор 1:</td>
+		<td><input style="width: 120px" type="text" name="comm1" maxlength="20"></td>
+		<td style="width: 120px">Комунікатор 2:</td>
+		<td><input style="width: 120px" type="text" name="comm2" maxlength="20"></td>
+	</tr>
+	<tr>
+		<td>SIM карта 1:</td>
+		<td><input style="width: 120px" type="tel" name="sim1" pattern="[0-9]{10}"></td>
+		<td>SIM карта 2:</td>
+		<td><input style="width: 120px" type="tel" name="sim2" pattern="[0-9]{10}"></td>
+	</tr>
+	<tr>
+		<td colspan=4 style="text-align: left; text-size: 8px; color: #999999">*поля обовязкові для заповнення</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td colspan=3 style="text-align: left"><button type="submit" name="submit" value="button2">Зберегти об'єкт</button></td>
+	</tr>
+</table>
+{% endif %}
+{% endif %}
+</form>
+{% endblock %}

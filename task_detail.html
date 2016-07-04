@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block sidebar %}
+<a class='sidebar_url' href={{url_for('create_task')}}><strong>Нове завдання</strong></a>
+{% endblock %}
+
+{% block main %}
+<h2 style='text-align:center; margin: 0 0 10px 0'> Детальна інформація по завданню </h2>
+
+<table class='task_list'>	
+		{% if task_details['priority_num'] == 1 %}
+		<tr style='background-color:#b3ccff; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif task_details['priority_num'] == 2 %}
+		<tr style='background-color:#d9d9d9; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif task_details['priority_num'] == 3 %}
+		<tr style='background-color:#ffffb3; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif task_details['priority_num'] == 4 %}
+		<tr style='background-color:#ffb3b3; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% endif %}
+	 		<td>{{task_details['object_number']}}</td>
+			<td colspan=5>{{task_details['object_name']}}</td>
+			<td style='text-align: right'><b>{{task_details['event_type']}}</b></td>	
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+			<td style='border-right:1px solid #999999; white-space:nowrap'>{{task_details['creator']}}</td>
+			<td colspan=6>{{task_details['object_address']}}</td>
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999'>
+			<td style='border-right:1px solid #999999'>{{task_details['event_date']}}</td>
+			<td colspan=6 rowspan=2 style='text-align:left; vertical-align:top'>{{task_details['event']}}</td>
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+			<td style='border-right:1px solid #999999'>{{task_details['event_time']}}</td>
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+			<td style='color:#999999; width:1px; white-space:nowrap'>Виконавець:</td>
+			<td>{{task_details['assigned_to']}}</td>
+			<td style='color:#999999; text-align:right'>Останні дії:</td>
+			<td style='text-align:left'>{{task_details['last_act_time']}}</td>
+			<td style='color:#999999; text-align:right'>Статус:</td>			
+			<td style='text-align:left;'>{{task_details['status']}}{{task_details['status_datetime']}}</td>
+			<td style='text-align:right'><a class='table_url' href={{url_for('task_list')}}><b>До завдань</b></a></td>
+		</tr>	
+</table>
+
+{% for index in actions_keys %}
+<table class='task_list'>
+		{% if actions_details[index]['action_type_num'] == 2 %}
+		<tr style='background-color:#ffffb3; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif actions_details[index]['action_type_num'] == 8 %}
+		<tr style='background-color:#ccffcc; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif actions_details[index]['action_type_num'] == 9 %}
+		<tr style='background-color:#80ff80; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif actions_details[index]['action_type_num'] == 10 %}
+		<tr style='background-color:#80d4ff; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% else %}
+		<tr style='background-color:#d9d9d9; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% endif %}
+			<td style='width: 80px; white-space:nowrap'>{{actions_details[index]['action_by']}}</td>
+			<td style='text-align:left'>{{actions_details[index]['action_date']}}</td>
+			<td style='text-align:right'>{{actions_details[index]['action_type']}}{{actions_details[index]['assigned_to']}}{{actions_details[index]['pendclose_date']}}</td>
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+			<td colspan=3>{{actions_details[index]['action_text']}}</td>
+		</tr>	
+</table>
+{% endfor %}
+{% endblock %}
+

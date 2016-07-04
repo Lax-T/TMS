@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block main %}
+<h2 style='text-align:center; margin: 0 0 10px 0'> Перелік обєктів </h2>
+<table class='object_list'>	
+{% for index in objects_index %}	
+	<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-top:1px solid #999999'>		
+	 	<td rowspan=2 style='width: 85px; white-space:nowrap; border-bottom:1px solid #999999'><a href="{{url_for('object_details', object_id=objects_data[index]['id'])}}" class='ob_details_url'><strong>{{objects_data[index]['number']}}</strong></a></td>
+		<td>{{objects_data[index]['name']}}</td>
+					
+	</tr>
+	<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+		<td>{{objects_data[index]['address']}}</td>
+	</tr>
+{% endfor %}		
+</table>
+{% endblock %}
+{% block sidebar %}
+<a class='sidebar_url' href="{{url_for('create_object')}}"><strong>Створити об'єкт</strong></a>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block sidebar %}
+<a class='sidebar_url' href={{url_for('create_task')}}><strong>Нове завдання</strong></a>
+{% endblock %}
+
+{% block main %}
+<h2 style='text-align:center; margin: 0 0 10px 0'> Перелік активних завдань </h2>
+
+{% for index in data_keys %}
+<table class='task_list'>	
+		{% if data[index]['priority_num'] == 1 %}
+		<tr style='background-color:#b3ccff; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif data[index]['priority_num'] == 2 %}
+		<tr style='background-color:#d9d9d9; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif data[index]['priority_num'] == 3 %}
+		<tr style='background-color:#ffffb3; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% elif data[index]['priority_num'] == 4 %}
+		<tr style='background-color:#ffb3b3; border-left:1px solid #999999; border-right:1px solid #999999; border-top:3px solid #999999'>
+		{% endif %}
+	 		<td>{{data[index]['object_number']}}</td>
+			<td colspan=5>{{data[index]['object_name']}}</td>
+			<td style='text-align: right'><b>{{data[index]['event_type']}}</b></td>	
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+			<td style='border-right:1px solid #999999; white-space:nowrap'>{{data[index]['creator']}}</td>
+			<td colspan=6>{{data[index]['object_address']}}</td>
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999'>
+			<td style='border-right:1px solid #999999'>{{data[index]['event_date']}}</td>
+			<td colspan=6 rowspan=2 style='text-align:left; border-bottom:1px solid #999999; vertical-align:top'>{{data[index]['event']}}</td>
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+			<td style='border-right:1px solid #999999'>{{data[index]['event_time']}}</td>
+		</tr>
+		<tr style='border-left:1px solid #999999; border-right:1px solid #999999; border-bottom:1px solid #999999'>
+			<td style='color:#999999; width:1px; white-space:nowrap'>Виконавець:</td>
+			<td>{{data[index]['assigned_to']}}</td>
+			<td style='color:#999999; text-align:right'>Останні дії:</td>
+			<td style='text-align:left'>{{data[index]['last_act_time']}}</td>
+			<td style='color:#999999; text-align:right'>Статус:</td>			
+			<td style='text-align:left;'>{{data[index]['status']}}{{data[index]['status_datetime']}}</td>
+			<td style='text-align:right'><a class='table_url' href={{url_for('task_detail', task_id=data[index]['id'])}}><b>Детальніше</b></a>
+		</tr>	
+</table>
+{% endfor %}
+{% endblock %}

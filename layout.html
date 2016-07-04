@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html style="transform: scale(1)">
+<head>
+<title>Keep it Simple</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div id="container">
+  <div id="header">TMS
+	<p>
+	{% if current_user.is_authenticated %}
+ 		Hi, {{ current_user.name }}! &nbsp; <a href={{url_for('logout')}}><b>Logout</b></a>
+	{% else %}
+		<a href={{url_for('login')}}><b>Login</b></a>
+	{% endif %}
+	</p>
+  </div>
+  <div id="menu"> <a href="{{url_for('home_page')}}">HOME</a> &nbsp; &nbsp; &nbsp; &nbsp; <a href="{{url_for('system_use')}}">SYSTEM USE</a> &nbsp; &nbsp; &nbsp; &nbsp; <a href="{{url_for('about')}}">ABOUT TEMPLATE</a>&nbsp; &nbsp; &nbsp; &nbsp;<a href="{{url_for('task_list')}}">TASKS</a>&nbsp; &nbsp; &nbsp; &nbsp;<a href="{{url_for('objects_list')}}">OBJECTS</a> </div>
+  <div id="sidebar">  
+  {% block sidebar %}{% endblock %}
+  </div>
+  <div id="main">   
+	{% with messages = get_flashed_messages() %}
+  	{% if messages %}
+   	 <ul>
+    	{% for message in messages %}
+     	 <li><b>{{ message }}</b></li>
+    	{% endfor %}
+    	</ul>
+  	{% endif %}
+	{% endwith %} 
+  {% block main %}{% endblock %}
+  </div>
+  <div id="footer"> &copy;2016 Keep it Simple &nbsp;<span class="separator">|</span>&nbsp; Reality Software &nbsp;<span class="separator">|</span>&nbsp; Lax-T </div>
+</div>
+</body>
+</html>
